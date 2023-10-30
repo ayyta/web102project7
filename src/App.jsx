@@ -11,6 +11,8 @@ const supabase = createClient(supabaseURL, supabaseAPIKey)
 import Create from './routes/Create'
 import Gallery from './routes/Gallery'
 import Home from './routes/Home'
+import Edit from './routes/Edit'
+
 
 //.post - create
 //.get - read
@@ -23,18 +25,23 @@ import Home from './routes/Home'
 
 
 function App() {
+  const [crewmateData, setCrewmateData] = useState(null)
+  const [updateCrewmates, setUpdateCrewmates] = useState(0)
+  function LoadingSpinner() {
+    return <div>Loading...</div>;
+  }
+
   useEffect(() => {
     async function getCrewmates () {
       const { data, error } = await supabase.from('crewmates').select();
       if (error) {
         console.warn(error)
       }
+      setCrewmateData(data);
       console.log(data);
     }
     getCrewmates();
-
-    
-  }, [])
+  }, [updateCrewmates])
   return (
     <BrowserRouter> 
       <main>
@@ -49,8 +56,11 @@ function App() {
         <div className='right-container'>
           <Routes>
             <Route path='/' element={<Home/>}/>
-            <Route path='/create' element={<Create/>}/>
-            <Route path='/gallery' element={<Gallery/>}/>
+            <Route path='/create' element={<Create updateC={setUpdateCrewmates} c={updateCrewmates}/>}/>
+            <Route path='/gallery' element={crewmateData ? <Gallery data={crewmateData} updateCrew={setUpdateCrewmates} crew={updateCrewmates}/> : <LoadingSpinner /> }/>
+            {crewmateData && crewmateData.map((crewmate) => (
+            <Route path={`/${crewmate.id}`} element={<Edit data={crewmateData} updateC={setUpdateCrewmates} c={updateCrewmates} id={crewmate.id}/>}></Route>
+            ))}
           </Routes>
 
 

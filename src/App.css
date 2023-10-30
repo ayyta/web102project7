@@ -68,3 +68,28 @@ li.selected {
   font-weight: bold; /* Make the text bold when selected */
 }
 
+.gallery-crewmate-card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Create three equally sized columns */
+}
+
+.card-img {
+  width: 40%;
+}
+
+.crewmate-card {
+  margin: 2% 5%;
+  background-color: grey;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px; /* Add padding for spacing */
+}
+
+.gallery-title {
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+}

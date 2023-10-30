@@ -8,49 +8,81 @@ const supabaseAPIKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 
 const supabase = createClient(supabaseURL, supabaseAPIKey)
 
-const Create = (props) => {
+const Edit = (props) => {
   const items = ['red', 'green', 'blue', 'purple', 'yellow', 'orange', 'pink'];
   const [color, setColor] = useState('');
+  const [color2, setColor2] = useState(props.data[props.id].color);
+  const [name, setName] = useState(props.data[props.id].name);
+  const [speed, setSpeed] = useState(props.data[props.id].speed);
 
   const changeColor = (item) => {
     setColor(item);
   }
+  const editCrewmate = () => {
+    let nameInput = document.getElementById('crewmateInputName').value;
+    let speedInput = document.getElementById('crewmateInputSpeed').value;
 
-  const createCrewmate = () => {
-    const nameInput = document.getElementById('crewmateInputName').value;
-    const speedInput = document.getElementById('crewmateInputSpeed').value;
-    console.log(nameInput, speedInput);
-    async function createCrewmate () {
-      const { data, error } = await supabase.from('crewmates').insert({name: nameInput, color: color, speed: speedInput});
+
+
+    nameInput = nameInput ? nameInput : props.data[props.id].name;
+    speedInput = speedInput ? speedInput : props.data[props.id].speed;
+    let colorInput = color ? color : props.data[props.id].color;
+    console.log(nameInput, speedInput, colorInput);
+
+    async function editCrew () {
+      const { data, error } = await supabase.from('crewmates').update({name: nameInput, speed: speedInput, color: colorInput}).eq('id', props.id);
       if (error) {
         console.warn(error)
       }
-      alert('Crewmate Created!');
-      console.log(data);
+      alert('Edited Crewmate!');
+      setName(nameInput);
+      setSpeed(speedInput);
+      setColor2(colorInput);
     }
-    createCrewmate();
+    editCrew();
     document.getElementById('crewmateInputName').value = '';
     document.getElementById('crewmateInputSpeed').value = '';
     setColor('');
     props.updateC(props.c + 1)
   }
+
+  const deleteCrewmate = () => {
+    async function deleteCrew () {
+      const { data, error } = await supabase.from('crewmates').delete().eq('id', props.id);
+      if (error) {
+        console.warn(error)
+      }
+      alert('Deleted Crewmate!');
+    }
+    deleteCrew();
+    document.getElementById('crewmateInputName').value = '';
+    document.getElementById('crewmateInputSpeed').value = '';
+    setColor('');
+    props.updateC(props.c + 1)
+  }
+
   return (
   <>
     <div className="create-container">
-      <p>Create Your Crewmate</p>
+      <p>Edit Your Crewmate</p>
       <img className="create-img" src="https://shimmering-stardust-c75334.netlify.app/assets/crewmates.43d07b24.png"></img>
-
+      <div>
+        <p>Crewmate Info</p>
+        <p>Name: {name}</p>
+        <p>Speed: {speed}</p>
+        <p>Color: {color2}</p>
+      </div>
       <div className="create-input-container">
         <div>
-          <p>Name:</p>
+          <p>New Name:</p>
           <input id="crewmateInputName" placeholder="Enter crewmates name"></input>
         </div>
         <div>
-          <p>Speed (mph):</p>
+          <p>New Speed (mph):</p>
           <input id="crewmateInputSpeed" placeholder="Enter speed in mph"></input>
         </div>
         <div>
-          <p>Color:</p>
+          <p>New Color:</p>
           <div>
             <ul>
               {items.map((item) => (
@@ -73,43 +105,13 @@ const Create = (props) => {
           </div>
         </div>
       </div>
-
       <div className="create-button-container">
-        <button className="create-button" onClick={createCrewmate}>Create</button>
+        <button className="create-button" onClick={editCrewmate}>Edit Crewmate</button>
+        <button className="create-button" onClick={deleteCrewmate}>Delete Crewmate</button>
       </div>
     </div>
   </>
   )
 }
-/*function BulletPointList() {
-  const [items, setItems] = useState([]);
-  const [inputValue, setInputValue] = useState('');
 
-  const handleAddItem = () => {
-    if (inputValue.trim() !== '') {
-      setItems([...items, inputValue]);
-      setInputValue('');
-    }
-  };
-
-  return (
-    <div>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        placeholder="Add a new item"
-      />
-      <button onClick={handleAddItem}>Add</button>
-    </div>
-  );
-}
-
-export default BulletPointList;*/
-
-export default Create;
+export default Edit;
