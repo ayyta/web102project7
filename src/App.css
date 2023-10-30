@@ -2,14 +2,69 @@ main {
   display: grid;
   width: 100vw;
   height: 100vh;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 6fr;
 }
 
 
 .left-container {
   background-color: rgb(1, 44, 82);
+  display: grid;
+  grid-template-rows:  10vh 10vh 10vh;
 }
-
+.left-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.5rem;
+}
 .right-container {
+  background-image: url("https://images7.alphacoders.com/114/1146879.jpg");
+  background-size: cover; /* Adjust to 'cover' or 'contain' as needed */
+  background-position: center center; /* Adjust the position as needed */
+  background-repeat: no-repeat; /* Prevent image repetition */
   background-color: grey;
 }
+
+.home-image {
+  width: 30%;
+}
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 5%;
+}
+
+.home-text {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.create-img {
+  width: 15%;
+}
+
+.create-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-input-container {
+  display: grid;
+  grid-template-columns: 200px 200px 200px;
+  gap: 10px;
+}
+
+li {
+  cursor: pointer;
+}
+
+li.selected {
+  font-weight: bold; /* Make the text bold when selected */
+}
+
