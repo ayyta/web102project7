@@ -9,24 +9,32 @@ const supabaseAPIKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 const supabase = createClient(supabaseURL, supabaseAPIKey)
 
 const Edit = (props) => {
+  console.log("data", props.data)
+  const crewmateData = {};
+  props.data.forEach(item => {
+    const { id, ...rest } = item;
+    crewmateData[id] = rest;
+  });
+  console.log(crewmateData)
   const items = ['red', 'green', 'blue', 'purple', 'yellow', 'orange', 'pink'];
   const [color, setColor] = useState('');
-  const [color2, setColor2] = useState(props.data[props.id].color);
-  const [name, setName] = useState(props.data[props.id].name);
-  const [speed, setSpeed] = useState(props.data[props.id].speed);
-
+  const [color2, setColor2] = useState(crewmateData[props.id].color);
+  const [name, setName] = useState(crewmateData[props.id].name);
+  const [speed, setSpeed] = useState(crewmateData[props.id].speed);
   const changeColor = (item) => {
     setColor(item);
   }
+
+
   const editCrewmate = () => {
     let nameInput = document.getElementById('crewmateInputName').value;
     let speedInput = document.getElementById('crewmateInputSpeed').value;
 
 
 
-    nameInput = nameInput ? nameInput : props.data[props.id].name;
-    speedInput = speedInput ? speedInput : props.data[props.id].speed;
-    let colorInput = color ? color : props.data[props.id].color;
+    nameInput = nameInput ? nameInput : crewmateData[props.id].name;
+    speedInput = speedInput ? speedInput : crewmateData[props.id].speed;
+    let colorInput = color ? color : crewmateData[props.id].color;
     console.log(nameInput, speedInput, colorInput);
 
     async function editCrew () {
